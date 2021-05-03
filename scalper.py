@@ -3,8 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.color import Color
+import os
+from playsound import playsound
+import info
+
+scriptdir = os.path.dirname(os.path.realpath(__file__))
 options = Options()
-options.add_argument("--user-data-dir={USER DATA PATH]")
+options.add_argument("user-data-dir="+scriptdir+"\profile")
 options.page_load_strategy = 'normal'
 browser1 = webdriver.Chrome(options=options)
 
@@ -16,34 +21,51 @@ def bot():
     browser1.get('https://www.bestbuy.com/cart')
 
     #checks if we need to click 'ship to'
-    time.sleep(1)
-    shipHome = browser1.find_element_by_xpath("//*[contains(@id, 'fulfillment-shipping')]") # ship to home ID: id="fulfillment-shipping-4pmjcw2zz24ff-4odjuv524m635"
-    if shipHome is not None: 
-        shipHome.click()
-
+    #time.sleep(1)
+    #shipHome = browser1.find_element_by_xpath("//*[contains(@id, 'fulfillment-shipping')]") # ship to home ID: id="fulfillment-shipping-4pmjcw2zz24ff-4odjuv524m635"
+    #if shipHome is not None: 
+    #    shipHome.click()
+    
     #click checkout button
     time.sleep(1)
     checkout = browser1.find_element_by_class_name('btn-primary')
     checkout.click()
 
     #wait for cvv box to appear
-    time.sleep(2)
-    cvv = browser1.find_element_by_id("credit-card-cvv")
-    cvv.send_keys("[YOUR CVV]")
+    #time.sleep(2)
+    #cvv = browser1.find_element_by_id("credit-card-cvv")
+    #cvv.send_keys(info.cvv)    
+
+    #relogin when prompted
+    time.sleep(1)	
+    try:
+        browser1.find_element_by_class_name('cia-signin')
+        print("Logging back in")
+        emailField = browser1.find_element_by_id('fld-e')
+        emailField.send_keys(info.email)
+
+        pwField = browser1.find_element_by_id('fld-p1')
+        pwField.send_keys(info.password)
+
+        loginbutton = browser1.find_element_by_class_name('btn-secondary')
+        loginbutton.click()
+    except:
+        print("No login prompt")
 
     #place order
-    placeOrder = browser1.find_element_by_class_name('button__fast-track')
+    #placeOrder = browser1.find_element_by_class_name('button__fast-track')
     #placeOrder.click()
-    print('ORDER PLACED :)')
-
-
+    #print('ORDER PLACED :)')
 
 
 #3080s
-skus = ['6436191','6429440','6432400','6432399','6436196','6432655','6432658','6436194']
+#skus = ['6436191','6429440','6432400','6432399','6436196','6432655','6432658','6436194']
 
 #test 5000 series
 #skus = ['6438941','6438942','6432400','6439000','6438943']  #6438943 6439000  ,'6439000','6438943'
+
+#3070 FE
+skus = ['6429442']
 
 
 def callGPUs():
@@ -57,10 +79,10 @@ def callGPUs():
                 item = browser1.find_element_by_xpath(f"//button[contains(@data-sku-id, '{sku}')]")
             except:
                 item = browser1.find_element_by_xpath(f"//a[contains(@data-sku-id, '{sku}')]")   #button[contains(@data-sku-id, '{sku}')]
-            if item is not None:
-                print(f"Found sku: {sku} on page.")
-            else:
-                print(f"Can't find item {sku}")
+            #if item is not None:
+                #print(f"Found sku: {sku} on page.")
+            #else:
+                #print(f"Can't find item {sku}")
             #time.sleep(0.06)
             try:
                 color = Color.from_string(item.value_of_css_property('background-color')).hex
@@ -74,16 +96,12 @@ def callGPUs():
                 break
             if inCart: break        # we want it to insta-break out of the loop
         if not inCart and not error: 
-            print("Nothing found in stock")
-            time.sleep(2)
+            #print("Nothing found in stock")
+            time.sleep(8)
             browser1.refresh()
 
-
-            
-
-browser1.get("https://www.bestbuy.com/site/computer-cards-components/video-graphics-cards/abcat0507002.c?id=abcat0507002&qp=gpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203080")
-
-#browser1.get('https://www.bestbuy.com/site/promo/amd-ryzen-5000')
+#browser1.get("https://www.bestbuy.com/site/computer-cards-components/video-graphics-cards/abcat0507002.c?id=abcat0507002&qp=gpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203060%20Ti%5Egpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203070")
+browser1.get("https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442")
 
 callGPUs()
 
@@ -92,11 +110,13 @@ atcBttn = False
 while not atcBttn:
     try:
         browser1.find_element_by_class_name('btn-primary').click()
-        time.sleep(1)
+        playsound(scriptdir+"\woohoo.wav")
+        #time.sleep(1)
         try:
             # see if we're in queue....
             browser1.find_element_by_xpath(
                 "//*[@aria-describedby = 'add-to-cart-wait-overlay']")
+            print("In queue")
             yourTurn = False
             while not yourTurn:
                 # check color of add to cart button, breaks out of exception when color changes
