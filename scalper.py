@@ -31,12 +31,17 @@ def bot():
     checkout = browser1.find_element_by_class_name('btn-primary')
     checkout.click()
 
-    #wait for cvv box to appear
-    #time.sleep(2)
-    #cvv = browser1.find_element_by_id("credit-card-cvv")
-    #cvv.send_keys(info.cvv)    
+    #wait for CVV box to appear (000 in info.py skips this, in case you're using PayPal or a BB credit card)
+    if info.cvv != "000":
+        time.sleep(1)
+        try:
+            cvv = browser1.find_element_by_id("credit-card-cvv")
+            print('Entering stored CVV')
+            cvv.send_keys(info.cvv)    
+        except:
+            print('No CVV prompt')
 
-    #relogin when prompted
+    #re-login if prompted
     time.sleep(1)	
     try:
         browser1.find_element_by_class_name('cia-signin')
@@ -69,7 +74,7 @@ skus = ['6429442']
 
 
 def callGPUs():
-    time.sleep(2)
+    time.sleep(1)
     inCart = False
     while not inCart:
         error = False
@@ -79,10 +84,11 @@ def callGPUs():
                 item = browser1.find_element_by_xpath(f"//button[contains(@data-sku-id, '{sku}')]")
             except:
                 item = browser1.find_element_by_xpath(f"//a[contains(@data-sku-id, '{sku}')]")   #button[contains(@data-sku-id, '{sku}')]
-            #if item is not None:
-                #print(f"Found sku: {sku} on page.")
-            #else:
-                #print(f"Can't find item {sku}")
+            if len(skus) > 1:
+                if item is not None:
+                    print(f"Found sku: {sku} on page.")
+                else:
+                    print(f"Can't find item {sku}")
             #time.sleep(0.06)
             try:
                 color = Color.from_string(item.value_of_css_property('background-color')).hex
@@ -97,7 +103,7 @@ def callGPUs():
             if inCart: break        # we want it to insta-break out of the loop
         if not inCart and not error: 
             #print("Nothing found in stock")
-            time.sleep(8)
+            time.sleep(9)
             browser1.refresh()
 
 #browser1.get("https://www.bestbuy.com/site/computer-cards-components/video-graphics-cards/abcat0507002.c?id=abcat0507002&qp=gpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203060%20Ti%5Egpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203070")
@@ -143,8 +149,13 @@ while not atcBttn:
 #### LINKS ####
 
 
+#3070s
+#NVIDIA GeForce RTX 3070 8GB GDDR6 PCI Express 4.0 Graphics Card - $499.99
+#browser1.get("https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442")
+
+
 #3080s
-# EVGA - GeForce RTX 3080 XC3 ULTRA GAMING 10GB - $839
+#EVGA - GeForce RTX 3080 XC3 ULTRA GAMING 10GB - $839
 #browser1.get('https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400')
 
 #EVGA - GeForce RTX 3080 XC3 BLACK GAMING 10GB - $799
