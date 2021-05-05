@@ -4,7 +4,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.color import Color
 import os
-from playsound import playsound
 import info
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
@@ -56,6 +55,14 @@ def bot():
         loginbutton.click()
     except:
         print("No login prompt")
+        
+    #paypal checkout
+    time.sleep(2)	
+    otherPaymentOptions = browser1.find_element_by_xpath("//a[@data-track = 'other-payment-options-link']")
+    otherPaymentOptions.click()
+    
+    paypalButton = browser1.find_element_by_class_name('payment__paypal-button')
+    paypalButton.click()
 
     #place order
     #placeOrder = browser1.find_element_by_class_name('button__fast-track')
@@ -116,7 +123,6 @@ atcBttn = False
 while not atcBttn:
     try:
         browser1.find_element_by_class_name('btn-primary').click()
-        playsound(scriptdir+"\woohoo.wav")
         #time.sleep(1)
         try:
             # see if we're in queue....
