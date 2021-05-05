@@ -45,8 +45,11 @@ def bot():
     try:
         browser1.find_element_by_class_name('cia-signin')
         print("Logging back in")
-        emailField = browser1.find_element_by_id('fld-e')
-        emailField.send_keys(info.email)
+        try:
+            emailField = browser1.find_element_by_id('fld-e')
+            emailField.send_keys(info.email)
+        except:
+            print("Email saved")
 
         pwField = browser1.find_element_by_id('fld-p1')
         pwField.send_keys(info.password)
