@@ -51,7 +51,7 @@ def bot():
         pwField = browser1.find_element_by_id('fld-p1')
         pwField.send_keys(info.password)
 
-        loginbutton = browser1.find_element_by_class_name('btn-secondary')
+        loginbutton = browser1.find_element_by_class_name('cia-form__controls__submit')
         loginbutton.click()
     except:
         print("No login prompt")
