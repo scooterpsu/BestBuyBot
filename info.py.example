@@ -1,0 +1,35 @@
+#bestbuy.com credentials
+email = ""
+password = ""
+
+#credit card cvv
+cvv = ""
+
+#gmail settings
+gmail = ""
+gpassword = "" #if 2FA, generate app password @ https://support.google.com/accounts/answer/185833?hl=en
+glabel = "BBScan" #which label you're applying to bestbuy.com emails. create gmail rule for "from:(BestBuyInfo@emailinfo.bestbuy.com) subject:(Verification code to complete)" to apply a label
+
+referPages = [
+    "https://www.bestbuy.com/site/computer-cards-components/video-graphics-cards/abcat0507002.c?id=abcat0507002",
+    "https://www.bestbuy.com/site/playstation-5/ps5-consoles/pcmcat1587395025973.c?id=pcmcat1587395025973",
+    "https://www.bestbuy.com/site/xbox-series-x-and-s/xbox-series-x-and-s-consoles/pcmcat1586900952752.c?id=pcmcat1586900952752",
+    "https://www.bestbuy.com/site/computer-cards-components/motherboards/abcat0507008.c?id=abcat0507008",
+    "https://www.bestbuy.com/site/computers-pcs/computer-cards-components/abcat0507000.c?id=abcat0507000"
+]
+
+skusArray = [
+    ["6429442"],
+    ["6430161"],
+    ["6428324"],
+    ["6356982"],
+    ["6429442","6439402","6438278","6439384","6439299","6437909","6439128","6439127"]
+]
+
+prodPages = [
+    "https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442",
+    "https://www.bestbuy.com/site/sony-playstation-5-digital-edition-console/6430161.p?skuId=6430161",
+    "https://www.bestbuy.com/site/microsoft-xbox-series-x-1tb-console-black/6428324.p?skuId=6428324",
+    "https://www.bestbuy.com/site/asus-rog-crosshair-viii-hero-socket-am4-usb-c-gen2-amd-motherboard-with-led-lighting/6356982.p?skuId=6356982",
+    "https://www.bestbuy.com/site/computer-cards-components/video-graphics-cards/abcat0507002.c?id=abcat0507002&qp=gpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203060%20Ti%5Egpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203070"
+]
